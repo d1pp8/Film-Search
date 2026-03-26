@@ -1,4 +1,4 @@
-from utilities import input_manager, tables , menu, pag
+from utilities import input_manager, tables , menu, pagination
 
 
 """ Created a controller to move logic from main to a separate layer """
@@ -15,7 +15,7 @@ def search_by_keyword(films):
     def query_create_func(page):
         return films.find_by_keyword(keyword=keyword,limit=PAGE_SIZE,page=page)
 
-    pag.get_ten_films(query_create_func)
+    pagination.get_ten_films(query_create_func)
 
 
 
@@ -57,7 +57,7 @@ def search_by_genres_and_year(films):
                 else:
                     def query_create_func(page):
                         return films.search_films_by_year_range_by_genre(gener_id=gener_id, start_year=start_year, end_year=end_year,limit=PAGE_SIZE, page=page)
-                    pag.get_ten_films(query_create_func)
+                    pagination.get_ten_films(query_create_func)
 
 
             elif choice == "0":
