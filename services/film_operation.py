@@ -9,7 +9,7 @@ class FilmsOperations:
 
     """ The function generates a request to search for a movie by keyword and passes the result on """
     def find_by_keyword(self, keyword, limit=10, page=0):
-        query = "SELECT title FROM film WHERE title LIKE %s LIMIT %s OFFSET %s"
+        query = "SELECT title, release_year FROM film WHERE title LIKE %s LIMIT %s OFFSET %s"
         param = (f"%{keyword}%", limit, page *10)
         return self.db.fetch_all(query, param)
 

@@ -5,7 +5,7 @@ def draw_table_with_ten_movie(films, counter: int, page_number):
     print("\n" + "🎬 Your result 🎬".center(width, "="))
 
     for film in films:
-        print(f"{counter}. {film["title"]}")
+        print(f"{counter}. {film["title"]} ({film["release_year"]})")
         counter += 1
     print(f" Page: {page_number} ".center(width, "="))
 
