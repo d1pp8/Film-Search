@@ -65,6 +65,8 @@ def search_by_genres_and_year(films):
 
                         log_search(search_type="genre_year", param = {"genre": gener_name, "year_range": [start_year, end_year]}, result_count=len(result))
 
+                        return result
+
                     pagination.get_ten_films(query_create_func)
 
 
