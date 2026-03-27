@@ -1,5 +1,5 @@
 from utilities import input_manager, tables , menu, pagination
-
+from services.search_logger import log_search
 
 """ Created a controller to move logic from main to a separate layer """
 
@@ -13,7 +13,12 @@ def search_by_keyword(films):
     keyword = input("\n🔍 Enter your \'keyword\': ")
 
     def query_create_func(page):
-        return films.find_by_keyword(keyword=keyword,limit=PAGE_SIZE,page=page)
+
+        result = films.find_by_keyword(keyword=keyword,limit=PAGE_SIZE,page=page)
+
+        log_search(search_type="keyword", param={"keyword": keyword}, result_count=len(result))
+
+        return result
 
     pagination.get_ten_films(query_create_func)
 
@@ -56,7 +61,10 @@ def search_by_genres_and_year(films):
 
                 else:
                     def query_create_func(page):
-                        return films.search_films_by_year_range_by_genre(gener_id=gener_id, start_year=start_year, end_year=end_year,limit=PAGE_SIZE, page=page)
+                        result = films.search_films_by_year_range_by_genre(gener_id=gener_id, start_year=start_year, end_year=end_year,limit=PAGE_SIZE, page=page)
+
+                        log_search(search_type="genre_year", param = {"genre": gener_name, "year_range": [start_year, end_year]}, result_count=len(result))
+
                     pagination.get_ten_films(query_create_func)
 
 
