@@ -6,7 +6,7 @@ def log_search(search_type: str, param: dict, result_count: int):
     collection = mongo_client.get_collection(config.MONGO_COLLECTION)
 
     document = {
-        "timestamp": datetime.utcnow(),
+        "timestamp": datetime.now(),
         "search_type": search_type,
         "param": param,
         "result_count": result_count
