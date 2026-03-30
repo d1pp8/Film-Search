@@ -32,17 +32,19 @@ def genre_selection():
 
     """ Function for displaying a short menu of item selections """
 
-
-    main_string = "".center(45)
+    main_string = "🎥Select a genre:".center(45)
 
     length = int(len(main_string)/2)
 
+    print(main_string)
     print("[🔍ID or Name]".center(length), end = "")
     print("[🚪Exit]".center(length), end="")
     print("\n\n️⚙️Your option: ",end="")
 
 
 def select_release_years(name):
+
+    """ Function for displaying a short menu of selections when specifying years """
     main_string = f"🔍 Enter year or range for '{name}' (e.g. 1999 or 1990-2000)"
 
     print(f"\n{main_string}")

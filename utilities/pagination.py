@@ -11,7 +11,7 @@ def get_ten_films(func):
         list_with_ten_films = func(page_counter)
         if not list_with_ten_films:
             print("\n❌No such result was found.")
-            return
+            break
 
         page_counter += 1
         tables.draw_table_with_ten_movie(list_with_ten_films, film_counter, page_counter)

@@ -92,10 +92,12 @@ def search_by_genres_and_year(films):
                 pagination.get_ten_films(query_create_func)
 
             # For back to select another gener
-            if choice == "9":
+            elif choice == "9":
                 break
 
-            return None
+            elif choice == "0":
+                return None
+
 
 
 
