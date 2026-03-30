@@ -20,9 +20,11 @@ def get_valid_input(question: str, validator, gener):
         value = input(question).strip()
         result = validator(value, gener)
 
-        if result is not None:
+        if result:
             return  result
-        print("\n❌ Invalid input")
+
+        if result is None:
+            print("\n❌ Invalid input")
 
 
 
@@ -48,9 +50,8 @@ def validate_year_input(value:str, gener):
 
         # If the entered range is not entered correctly, then information is displayed about the range in which we have films.
         elif start < gener["min_year"] or end > gener["max_year"]:
-            print(f"\n❌No results for \'{gener['name']}\' in range \'gener['min_year']\'-\'gener['max_year']\'")
-            print(f"➡️We have movies in the \'{gener['name']}\' only from {gener["min_year"]}-{gener["max_year"]} years.")
-            return None
+            print_range_checker(gener)
+            return False
 
 
         # If the dates are entered correctly and two different dates are received, we return the values
@@ -58,11 +59,26 @@ def validate_year_input(value:str, gener):
 
     # If one date is entered, I return it.
     if value.isdigit():
+        value = int(value)
+        if value < gener["min_year"] or value > gener["max_year"]:
+            print_range_checker(gener)
+            return False
+
         year = int(value)
         return year, year
 
     # Default return
     return None
+
+
+
+def print_range_checker(gener):
+
+        """ Function to display an error if the user entered an incorrect year """
+
+        print(f"\n❌No results for \'{gener['name']}\' in range \'{gener['min_year']}\'-\'{gener['max_year']}\'")
+        print(f"➡️We have movies in the \'{gener['name']}\' only from {gener["min_year"]}-{gener["max_year"]} years.")
+
 
 
 

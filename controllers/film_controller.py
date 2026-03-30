@@ -9,81 +9,95 @@ from services.statistic import get_top_searches
 PAGE_SIZE = 10
 
 
-""" Controller for finding films by keyword """
-""" 1. From main menu """
+""" 
+Controller for finding films by keyword
+Point 1. From main menu 
+"""
 def search_by_keyword(films):
     keyword = input("\n🔍 Enter your \'keyword\': ")
 
-    """ A function closure was created to avoid duplicating a large piece of code """
-    """ A closure function specifically for keyword searches """
+
     def query_create_func(page):
 
-        result = films.find_by_keyword(keyword=keyword.lower(),limit=PAGE_SIZE,page=page)
+        """ A function closure was created to avoid duplicating a large piece of code
+        A closure function specifically for keyword searches """
 
-        log_search(search_type="keyword", param={"keyword": keyword}, result_count=len(result))
+        result = films.find_by_keyword(keyword=keyword.lower(), limit=PAGE_SIZE,page=page)
+
+        # Logging a query to a MongoDB database
+        log_search(search_type="keyword",param={"keyword": keyword}, result_count=len(result))
 
         return result
 
+    # Function to display 10 movies received by a request
     pagination.get_ten_films(query_create_func)
 
 
 
-""" Controller for finding films by genres and years release """
-""" 2. From main menu """
+""" 
+Controller for finding films by genres and years release 
+Point 2. From main menu 
+"""
 def search_by_genres_and_year(films):
 
     films_genres = films.get_all_genres_with_dates()
 
     while True:
 
-        """ draw all genres and get one from user """
+        # draw all genres and get one from user
         tables.draw_table_with_all_genres(films_genres)
         selected_genre = input_manager.get_user_gener(films_genres)
 
-        # поменять иформационый вывод
+        # Returns to the main menu if the user does not want to select a genre
+        # And show a message about info has stopped
         if selected_genre is None:
             print("⛔Information about film genres has stopped.")
             return None
 
-        gener_id = selected_genre["category_id"]
-        gener_name = selected_genre["name"]
-        ### Доделать валидацию по годам
+
 
         while True:
 
-            menu.show_menu_for_range_years(gener_name)
+            # Display a menu with an option to exit or enter a range of release years.
+            menu.show_menu_for_range_years(selected_genre["name"])
             choice = input_manager.check_choice("\nSelect the number: ", ["1","0"])
 
+            # Here we add a search by year and a check of the validity of the entered data.
             if choice == "1":
-                start_year, end_year = input_manager.get_valid_input(f"\n🗓️Enter year or range for {gener_name}" "\nIn format (yyyy-yyyy): ", input_manager.validate_year_input, selected_genre)
-
-                if start_year < selected_genre["min_year"] or end_year > selected_genre["max_year"]:
-                    print(f"\n❌No results for \'{gener_name}\' in range \'{start_year}\'-\'{end_year}\'")
-                    print(f"➡️We have movies in the \'{gener_name}\' only from {selected_genre["min_year"]}-{selected_genre["max_year"]} years.")
+                start_year, end_year = input_manager.get_valid_input(f"\n🗓️Enter year or range for {selected_genre["name"]}" "\nIn format (yyyy-yyyy): ", input_manager.validate_year_input, selected_genre)
 
 
-                else:
-                    """ A function closure was created to avoid duplicating a large piece of code """
-                    """ The closure function is specifically for searching by genre and year """
-                    def query_create_func(page):
-                        result = films.search_films_by_year_range_by_genre(gener_id=gener_id, start_year=start_year, end_year=end_year,limit=PAGE_SIZE, page=page)
+                def query_create_func(page):
 
-                        log_search(search_type="genre_year", param = {"genre": gener_name, "year_range": [start_year, end_year]}, result_count=len(result))
+                    """ A function closure was created to avoid duplicating a large piece of code
+                     The closure function is specifically for searching by genre and year """
 
-                        return result
+                    result = films.search_films_by_year_range_by_genre(gener_id=selected_genre["category_id"], start_year=start_year, end_year=end_year, limit=PAGE_SIZE, page=page)
 
-                    pagination.get_ten_films(query_create_func)
+                    # Logging a query to a MongoDB database
+                    log_search(search_type="genre_year", param = {"genre": selected_genre["name"], "year_range": [start_year, end_year]}, result_count=len(result))
 
+                    return result
 
-            elif choice == "0":
-                return None
+                # Function to display 10 movies received by a request
+                pagination.get_ten_films(query_create_func)
+
+            return None
 
 
 
-
+""" 
+Controller for displaying statistics on popular and recent queries
+Point 3. From main menu 
+"""
 def show_statistics():
-    stats = get_top_searches()
 
+
+
+    # I must add one more Statistic for last 5 searched
+    pass
+
+    stats = get_top_searches()
     print("\n🔥 TOP 5 SEARCHES:\n")
 
     for i, item in enumerate(stats, start=1):
