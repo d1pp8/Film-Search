@@ -1,6 +1,6 @@
-
-    # FOR MENU Checking the validity of the answer to the question
 def check_choice(question: str, valid_choices: list):
+
+    """ FOR MENU Checking the validity of the answer to the question """
 
     valid_choices = {valid.lower() for valid in valid_choices}
     while True:
@@ -10,18 +10,29 @@ def check_choice(question: str, valid_choices: list):
         print(f"\n⭕ Please enter one of: {', '.join(sorted(valid_choices))}")
 
 
-def get_valid_input(question: str, validator):
+
+
+def get_valid_input(question: str, validator, gener):
+
+    """ Validator function to check the presence of data """
+
     while True:
         value = input(question).strip()
-        result = validator(value)
+        result = validator(value, gener)
 
         if result is not None:
             return  result
         print("\n❌ Invalid input")
 
-def validate_year_input(value:str):
+
+
+def validate_year_input(value:str, gener):
+
+    """ Is the year entered by the user valid? """
 
     if "-" in value:
+
+        # Parsing by "-", to get two values
         parts = value.split("-")
         if len(parts) != 2:
             return None
@@ -30,20 +41,36 @@ def validate_year_input(value:str):
         if not(start.isdigit() and end.isdigit()):
             return None
 
+        # The first year of the range cannot be greater than the second
         start, end = int(start), int(end)
         if start > end:
             return None
+
+        # If the entered range is not entered correctly, then information is displayed about the range in which we have films.
+        elif start < gener["min_year"] or end > gener["max_year"]:
+            print(f"\n❌No results for \'{gener['name']}\' in range \'gener['min_year']\'-\'gener['max_year']\'")
+            print(f"➡️We have movies in the \'{gener['name']}\' only from {gener["min_year"]}-{gener["max_year"]} years.")
+            return None
+
+
+        # If the dates are entered correctly and two different dates are received, we return the values
         return start, end
 
+    # If one date is entered, I return it.
     if value.isdigit():
         year = int(value)
         return year, year
 
+    # Default return
     return None
 
 
-   # Get selected gener from user input
+
+
+
 def get_user_gener(genres):
+
+    """ Get selected gener from user input """
 
     #Create dictionaries for searching by id and name
     genres_by_id = {genre["category_id"]: genre for genre in genres}

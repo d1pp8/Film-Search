@@ -14,6 +14,8 @@ PAGE_SIZE = 10
 def search_by_keyword(films):
     keyword = input("\n🔍 Enter your \'keyword\': ")
 
+    """ A function closure was created to avoid duplicating a large piece of code """
+    """ A closure function specifically for keyword searches """
     def query_create_func(page):
 
         result = films.find_by_keyword(keyword=keyword.lower(),limit=PAGE_SIZE,page=page)
@@ -38,13 +40,14 @@ def search_by_genres_and_year(films):
         tables.draw_table_with_all_genres(films_genres)
         selected_genre = input_manager.get_user_gener(films_genres)
 
+        # поменять иформационый вывод
         if selected_genre is None:
             print("⛔Information about film genres has stopped.")
             return None
 
         gener_id = selected_genre["category_id"]
         gener_name = selected_genre["name"]
-
+        ### Доделать валидацию по годам
 
         while True:
 
@@ -52,16 +55,16 @@ def search_by_genres_and_year(films):
             choice = input_manager.check_choice("\nSelect the number: ", ["1","0"])
 
             if choice == "1":
-                start_year, end_year = input_manager.get_valid_input(f"\n🗓️Enter year or range for {gener_name}" "\nIn format (yyyy-yyyy): ", input_manager.validate_year_input)
+                start_year, end_year = input_manager.get_valid_input(f"\n🗓️Enter year or range for {gener_name}" "\nIn format (yyyy-yyyy): ", input_manager.validate_year_input, selected_genre)
 
                 if start_year < selected_genre["min_year"] or end_year > selected_genre["max_year"]:
                     print(f"\n❌No results for \'{gener_name}\' in range \'{start_year}\'-\'{end_year}\'")
                     print(f"➡️We have movies in the \'{gener_name}\' only from {selected_genre["min_year"]}-{selected_genre["max_year"]} years.")
 
-                elif start_year is None:
-                    return None
 
                 else:
+                    """ A function closure was created to avoid duplicating a large piece of code """
+                    """ The closure function is specifically for searching by genre and year """
                     def query_create_func(page):
                         result = films.search_films_by_year_range_by_genre(gener_id=gener_id, start_year=start_year, end_year=end_year,limit=PAGE_SIZE, page=page)
 

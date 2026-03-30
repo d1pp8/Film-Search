@@ -1,6 +1,7 @@
 from utilities import input_manager, tables
 
 
+""" Output of films in batches of 10 """
 def get_ten_films(func):
 
     page_counter = 0
@@ -18,7 +19,6 @@ def get_ten_films(func):
 
         if len(list_with_ten_films) < 10:
             print("\n✅All found films")
-            # value = input_manager.check_choice("-Write (\'0\'/\'exit\') for exit: ", ["0", "exit"])
             return
 
         choice_for_next_ten_films = input_manager.check_choice("\n-Show next 10 films? (y/n): ", ["y", "n"])
