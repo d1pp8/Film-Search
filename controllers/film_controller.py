@@ -3,7 +3,6 @@ from services.search_logger import log_search
 from services import statistic
 
 
-""" Created a controller to move logic from main to a separate layer """
 
 # Constant for limit content on "page"
 PAGE_SIZE = 10
