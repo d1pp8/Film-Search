@@ -95,11 +95,14 @@ def show_statistics():
 
     while True:
         menu.menu_for_statistic()
-        choice = input_manager.check_choice("\n️Select the number: ", ["1", "2", "9", "0"])
+        choice = input_manager.check_choice("\n️Select the number: ", ["1", "2","0"])
 
         if choice == "1":
-
             stats = statistic.get_top_searches()
+            if not stats:
+                print("📝No records in the database")
+                break
+
             tables.print_top_searches(stats)
 
             menu.menu_navigate_for_statistic()
@@ -113,6 +116,10 @@ def show_statistics():
 
         elif choice == "2":
             stats = statistic.get_last_searches()
+            if not stats:
+                print("📝No records in the database")
+                break
+
             tables.print_last_searches(stats)
 
             menu.menu_navigate_for_statistic()

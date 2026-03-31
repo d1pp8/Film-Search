@@ -132,7 +132,7 @@ def get_user_gener(genres):
 
 def format_params(param):
     if "keyword" in param:
-        return f"keyword = '{param['keyword']}'"
+        return f"keyword = \'{param["keyword"]}\'"
     if "genre" in param:
-        return f"{param['genre']} ({param['year_range'][0]}-{param['year_range'][1]})"
+        return f"{param["genre"]} ({param["year_range"][0]}-{param["year_range"][1]})"
     return str(param)
